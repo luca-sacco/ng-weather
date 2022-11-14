@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { LocationData } from 'app/core/models';
 import { Observable } from 'rxjs';
 import { LocationService } from '../../../core/services/location.service';
@@ -12,16 +11,9 @@ import { LocationService } from '../../../core/services/location.service';
 export class ConditionsListComponent implements OnInit {
   locations$: Observable<LocationData[]>;
 
-  constructor(
-    private locationService: LocationService,
-    private router: Router
-  ) {}
+  constructor(private locationService: LocationService) {}
 
   ngOnInit(): void {
     this.locations$ = this.locationService.getLocations();
-  }
-
-  showForecast(zipcode: string) {
-    this.router.navigate(['/forecast', zipcode]);
   }
 }

@@ -27,12 +27,14 @@ export class LocationService {
     return of('').pipe(delay(1000));
   }
 
-  removeLocation(zipcode: string, nation: string) {
-    let index = this.locations$.value.findIndex(
-      (location) => location.zipCode === zipcode && location.nation === nation
+  removeLocation({ zipCode, nation }) {
+    const locations = this.locations$.value;
+    let index = locations.findIndex(
+      (location) => location.zipCode === zipCode && location.nation === nation
     );
     if (index !== -1) {
-      this.locations$.value.splice(index, 1);
+      locations.splice(index, 1);
+      this.locations$.next(locations);
       localStorage.setItem(LOCATIONS, JSON.stringify(this.locations$.value));
     }
   }

@@ -7,7 +7,7 @@ const appRoutes: Routes = [
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
   },
   {
-    path: 'forecast/:zipcode',
+    path: 'forecast',
     loadChildren: () =>
       import('./forecast/forecast.module').then((m) => m.ForecastModule),
   },
