@@ -32,7 +32,7 @@ export class AutocompleteComponent
   @Input() placeholder: string = '';
   @Input() disabled: boolean;
   @Input() minTermLength?: number;
-  @Input() searchMethod?: (search: string) => LabelValue[];
+  @Input() searchMethod?: (search: string, value: LabelValue) => boolean;
   @Input() options?: LabelValue[] = [];
 
   showDropdown = false;
@@ -119,6 +119,9 @@ export class AutocompleteComponent
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.options) {
       this._optionsList.setOptions(changes.options.currentValue || []);
+    }
+    if (changes.searchMethod) {
+      this._optionsList.setFilterFn(changes.searchMethod.currentValue);
     }
   }
 

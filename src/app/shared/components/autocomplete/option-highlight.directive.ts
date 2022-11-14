@@ -26,26 +26,21 @@ export class OptionHighlightDirective
   ngOnInit(): void {}
 
   ngOnChanges() {
-    if (
-      this.label !== null &&
-      this.label !== undefined &&
-      this.searcTerm !== null &&
-      this.searcTerm !== undefined
-    ) {
-      this.__highlight();
+    if (this._isDefined(this.label) && this._isDefined(this.searcTerm)) {
+      this._highlight();
     }
   }
 
   ngAfterViewInit() {
     this.label = this.element.innerHTML;
-    if (this.label && this.searcTerm) {
-      this.__highlight();
+    if (this._isDefined(this.label) && this._isDefined(this.searcTerm)) {
+      this._highlight();
     }
   }
 
-  private __highlight() {
+  private _highlight() {
     if (!this.searcTerm) {
-      this._setHtml(this.label);
+      this._setInnerHtml(this.label);
       return;
     }
     const regex = new RegExp(this.searcTerm, 'gi');
@@ -53,36 +48,10 @@ export class OptionHighlightDirective
       regex,
       `<span class=\"font-weight-bold\">$&</span>`
     );
-    this._setHtml(html);
+    this._setInnerHtml(html);
   }
 
-  private _setHtml(html) {
-    this.renderer.setProperty(this.elementRef.nativeElement, 'innerHTML', html);
-  }
-
-  private _escapeRegExp(str: string): string {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  }
-
-  //   private _highlightLabel() {
-  //     const label = this.label;
-  //     if (!this.term) {
-  //       this._setInnerHtml(label);
-  //       return;
-  //     }
-
-  //     const alternationString = this._escapeRegExp(this.term).replace(' ', '|');
-  //     const termRegex = new RegExp(alternationString, 'gi');
-  //     this._setInnerHtml(
-  //       label.replace(termRegex, `<span class=\"highlighted\">$&</span>`)
-  //     );
-  //   }
-
-  //   private get _canHighlight() {
-  //     return this._isDefined(this.term) && this._isDefined(this.label);
-  //   }
-
-  private _setInnerHtml(html) {
+  private _setInnerHtml(html: any) {
     this.renderer.setProperty(this.elementRef.nativeElement, 'innerHTML', html);
   }
 

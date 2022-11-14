@@ -16,6 +16,7 @@
           formControlName="nation"
           [options]="nations$ | async"
         ></app-autocomplete>
+        <br />
         <app-button [clickFn]="addLocation.bind(this)">
           <button default class="btn btn-primary" [disabled]="!form.valid">
             Add location

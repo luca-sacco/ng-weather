@@ -20,11 +20,19 @@ export class SearchLocationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this._initForm();
+  }
+
+  private _initForm() {
     this.form = new FormGroup({
       zipCode: new FormControl('', Validators.required),
       nation: new FormControl('', Validators.required),
     });
     this.nations$ = this.countyService.getAllCountries();
+  }
+
+  search(term: string, item: LabelValue) {
+    return false;
   }
 
   addLocation() {
