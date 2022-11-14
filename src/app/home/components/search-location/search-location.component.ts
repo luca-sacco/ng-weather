@@ -11,7 +11,6 @@ import { LocationService } from '../../../core/services/location.service';
   templateUrl: './search-location.component.html',
 })
 export class SearchLocationComponent implements OnInit {
-  selectedNation: LabelValue;
   nations$: Observable<LabelValue[]>;
   form: FormGroup;
 
@@ -29,6 +28,6 @@ export class SearchLocationComponent implements OnInit {
   }
 
   addLocation() {
-    this.service.addLocation(this.form.value);
+    return this.service.addLocation(this.form.value);
   }
 }

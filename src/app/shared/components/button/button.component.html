@@ -1,0 +1,11 @@
+<ng-container *ngIf="status$ | async as status">
+  <ng-container *ngIf="status.default">
+    <ng-content select="[default]"></ng-content>
+  </ng-container>
+  <ng-container *ngIf="status.submitting">
+    <ng-content select="[submitting]"></ng-content>
+  </ng-container>
+  <ng-container *ngIf="status.done">
+    <ng-content select="[done]"></ng-content>
+  </ng-container>
+</ng-container>

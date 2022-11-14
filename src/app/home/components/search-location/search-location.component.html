@@ -3,7 +3,6 @@
     <div class="col-md-6">
       <div [formGroup]="form">
         <h4>Enter a zipcode:</h4>
-        <!-- <div []></div> -->
         <input
           type="text"
           formControlName="zipCode"
@@ -17,13 +16,13 @@
           formControlName="nation"
           [options]="nations$ | async"
         ></app-autocomplete>
-        <button
-          [disabled]="!form.valid"
-          class="btn btn-primary"
-          (click)="addLocation()"
-        >
-          Add location
-        </button>
+        <app-button [clickFn]="addLocation.bind(this)">
+          <button default class="btn btn-primary" [disabled]="!form.valid">
+            Add location
+          </button>
+          <button submitting class="btn btn-primary" disabled>Adding...</button>
+          <button done class="btn btn-success">Done</button>
+        </app-button>
       </div>
     </div>
   </div>
