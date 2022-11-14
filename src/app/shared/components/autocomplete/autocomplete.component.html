@@ -1,0 +1,29 @@
+<div class="dropdown" [class.show]="showDropdown">
+  <input
+    #inputSearch
+    type="text"
+    [value]="value"
+    (focus)="onFocus()"
+    [placeholder]="placeholder"
+    class="form-control"
+    [disabled]="disabled"
+    autocomplete="off"
+  />
+
+  <div
+    #dropdown
+    class="dropdown-menu custom-dropdown"
+    [class.show]="showDropdown"
+  >
+    <a
+      class="dropdown-item"
+      [optionHighlight]="value"
+      *ngFor="let item of filteredOptions; let index = index"
+      (click)="onSelect(item)"
+    >
+      {{ item.label }}
+    </a>
+
+    <a *ngIf="!filteredOptions.length" class="dropdown-item"> No elements </a>
+  </div>
+</div>
