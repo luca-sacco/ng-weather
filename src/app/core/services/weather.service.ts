@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { interval, Observable, of, timer } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, of, timer } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { WeatherCondition, WrapperWeatherCondition } from '../models';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class WeatherService {
     zipCode: string,
     nation: string
   ): Observable<WrapperWeatherCondition> {
-    return interval(3000).pipe(
+    return timer(0, 30000).pipe(
       switchMap(() => this._fetchWeatherCondition(zipCode, nation)),
       map((response) => ({ error: false, data: response })),
       catchError((err: HttpErrorResponse) => {
