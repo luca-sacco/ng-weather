@@ -1,0 +1,57 @@
+<ng-container *ngIf="weatherInfo$ | async as weatherInfo; else loadingTemplate">
+  <div class="well flex">
+    <ng-container
+      [ngTemplateOutlet]="
+        weatherInfo.error ? errorTemplate : weatherInfoTemplate
+      "
+      [ngTemplateOutletContext]="{
+        $implicit: weatherInfo?.data,
+        location: location
+      }"
+    ></ng-container>
+  </div>
+</ng-container>
+
+<ng-template #loadingTemplate>
+  <div class="well">
+    <div>
+      <div class="skeleton skeleton-text"></div>
+      <div class="skeleton skeleton-text"></div>
+      <div class="skeleton skeleton-text"></div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #weatherInfoTemplate let-weatherInfo let-location="location">
+  <div>
+    <h3>{{ weatherInfo.name }} ({{ location.zipCode }})</h3>
+    <h4>Current conditions: {{ weatherInfo.weather[0].main }}</h4>
+    <h4>Temperatures today:</h4>
+    <p>
+      Current {{ weatherInfo.main.temp | number: '.0-0' }} - Max
+      {{ weatherInfo.main.temp_max | number: '.0-0' }} - Min
+      {{ weatherInfo.main.temp_min | number: '.0-0' }}
+    </p>
+    <p>
+      <a (click)="goToForecast(location)"
+        >Show 5-day forecast for {{ weatherInfo.name }}</a
+      >
+    </p>
+  </div>
+  <div>
+    <span class="close" (click)="locationService.removeLocation(location)"
+      >&times;</span
+    >
+    <img [src]="weatherService.getWeatherIcon(weatherInfo.weather[0].id)" />
+  </div>
+</ng-template>
+
+<ng-template #errorTemplate let-weatherInfo let-location="location">
+  <div>
+    <h4>Error!</h4>
+    <h5>{{ weatherInfo.message }}</h5>
+  </div>
+  <span class="close" (click)="locationService.removeLocation(location)"
+    >&times;</span
+  >
+</ng-template>

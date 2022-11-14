@@ -1,33 +1,41 @@
 import { Injectable } from '@angular/core';
-import {WeatherService} from "./weather.service";
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { LocationData } from '../models';
 
-export const LOCATIONS : string = "locations";
+export const LOCATIONS: string = 'locations';
 
 @Injectable()
 export class LocationService {
+  private locations$: BehaviorSubject<LocationData[]> = new BehaviorSubject([]);
 
-  locations : string[] = [];
-
-  constructor(private weatherService : WeatherService) {
-    let locString = localStorage.getItem(LOCATIONS);
-    if (locString)
-      this.locations = JSON.parse(locString);
-    for (let loc of this.locations)
-      this.weatherService.addCurrentConditions(loc);
+  constructor() {
+    const locString = localStorage.getItem(LOCATIONS);
+    if (locString) {
+      this.locations$.next(JSON.parse(locString));
+    }
   }
 
-  addLocation(zipcode : string){
-    this.locations.push(zipcode);
-    localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-    this.weatherService.addCurrentConditions(zipcode);
+  getLocations(): Observable<LocationData[]> {
+    return this.locations$.asObservable();
   }
 
-  removeLocation(zipcode : string){
-    let index = this.locations.indexOf(zipcode);
-    if (index !== -1){
-      this.locations.splice(index, 1);
-      localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-      this.weatherService.removeCurrentConditions(zipcode);
+  addLocation({ zipCode, nation }) {
+    this.locations$.value.push({ zipCode, nation });
+    this.locations$.next(this.locations$.value);
+    localStorage.setItem(LOCATIONS, JSON.stringify(this.locations$.value));
+    return of('').pipe(delay(1000));
+  }
+
+  removeLocation({ zipCode, nation }) {
+    const locations = this.locations$.value;
+    let index = locations.findIndex(
+      (location) => location.zipCode === zipCode && location.nation === nation
+    );
+    if (index !== -1) {
+      locations.splice(index, 1);
+      this.locations$.next(locations);
+      localStorage.setItem(LOCATIONS, JSON.stringify(this.locations$.value));
     }
   }
 }

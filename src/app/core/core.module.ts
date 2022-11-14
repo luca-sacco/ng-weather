@@ -5,6 +5,7 @@ import {
   SkipSelf,
 } from '@angular/core';
 import { LocationService, WeatherService } from './services';
+import { CountryService } from './services/country.service';
 
 @NgModule({
   imports: [],
@@ -21,7 +22,7 @@ export class CoreModule {
   static forRoot(): ModuleWithProviders<CoreModule> {
     return {
       ngModule: CoreModule,
-      providers: [LocationService, WeatherService],
+      providers: [LocationService, CountryService, WeatherService],
     };
   }
 }
