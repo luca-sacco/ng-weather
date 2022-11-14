@@ -26,3 +26,12 @@ export interface WeatherCondition {
   name: string;
   cod: number;
 }
+export interface WrapperWeatherCondition {
+  error: boolean;
+  data?: WeatherCondition | WeatherError;
+}
+
+export interface WeatherError {
+  cod: string;
+  message: string;
+}

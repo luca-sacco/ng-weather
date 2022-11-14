@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocationData, WeatherCondition } from 'app/core/models';
+import { LocationData, WrapperWeatherCondition } from 'app/core/models';
 import { LocationService, WeatherService } from 'app/core/services';
 import { Observable } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 export class ConditionDetailComponent implements OnInit {
   @Input() location: LocationData;
 
-  weather$: Observable<WeatherCondition>;
+  weatherInfo$: Observable<WrapperWeatherCondition>;
 
   constructor(
     public locationService: LocationService,
@@ -21,16 +21,16 @@ export class ConditionDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.weather$ = this.weatherService.getWeatherConditionByZipCodeAndNation(
-      this.location.zipCode,
-      this.location.nation
-    );
+    this.weatherInfo$ =
+      this.weatherService.getWeatherConditionByZipCodeAndNation(
+        this.location.zipCode,
+        this.location.nation
+      );
   }
 
   goToForecast(location: LocationData) {
     this.router.navigate(['/forecast'], { queryParams: location });
   }
-  // [routerLink]="['/forecast', location]"
 
   showForecast(zipcode: string) {
     this.router.navigate(['/forecast', zipcode]);
