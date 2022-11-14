@@ -73,9 +73,9 @@ export class AutocompleteComponent
     this._optionsList = new OptionsList();
   }
 
-  writeValue(value: LabelValue): void {
+  writeValue(value: string): void {
     if (value) {
-      this.value = value.label;
+      this.value = value;
     }
   }
 
