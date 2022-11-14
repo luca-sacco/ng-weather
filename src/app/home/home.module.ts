@@ -1,18 +1,28 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from 'app/shared/shared.module';
 import {
-  CurrentConditionsComponent,
+  ConditionDetailComponent,
+  ConditionsListComponent,
   MainPageComponent,
-  ZipcodeEntryComponent,
+  SearchLocationComponent,
 } from './components';
 import { HomeRoutingModule } from './home.routing';
 
 @NgModule({
   declarations: [
     MainPageComponent,
-    ZipcodeEntryComponent,
-    CurrentConditionsComponent,
+    SearchLocationComponent,
+    ConditionsListComponent,
+    ConditionDetailComponent,
   ],
-  imports: [CommonModule, HomeRoutingModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HomeRoutingModule,
+  ],
 })
 export class HomeModule {}

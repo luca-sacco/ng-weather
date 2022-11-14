@@ -1,0 +1,30 @@
+<div class="well">
+  <div class="row">
+    <div class="col-md-6">
+      <div [formGroup]="form">
+        <h4>Enter a zipcode:</h4>
+        <!-- <div []></div> -->
+        <input
+          type="text"
+          formControlName="zipCode"
+          placeholder="Zipcode"
+          class="form-control"
+        />
+        <br />
+        <h4>Enter a nation:</h4>
+        <app-autocomplete
+          placeholder="Nation"
+          formControlName="nation"
+          [options]="nations$ | async"
+        ></app-autocomplete>
+        <button
+          [disabled]="!form.valid"
+          class="btn btn-primary"
+          (click)="addLocation()"
+        >
+          Add location
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

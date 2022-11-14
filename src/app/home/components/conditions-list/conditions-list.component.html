@@ -1,0 +1,5 @@
+<div>
+  <ng-container *ngFor="let location of locations$ | async">
+    <app-condition-detail [location]="location"></app-condition-detail>
+  </ng-container>
+</div>

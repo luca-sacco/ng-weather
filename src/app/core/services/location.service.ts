@@ -1,33 +1,37 @@
 import { Injectable } from '@angular/core';
-import {WeatherService} from "./weather.service";
+import { BehaviorSubject, Observable } from 'rxjs';
+import { LocationData } from '../models';
 
-export const LOCATIONS : string = "locations";
+export const LOCATIONS: string = 'locations';
 
 @Injectable()
 export class LocationService {
+  private locations$: BehaviorSubject<LocationData[]> = new BehaviorSubject([]);
 
-  locations : string[] = [];
-
-  constructor(private weatherService : WeatherService) {
-    let locString = localStorage.getItem(LOCATIONS);
-    if (locString)
-      this.locations = JSON.parse(locString);
-    for (let loc of this.locations)
-      this.weatherService.addCurrentConditions(loc);
+  constructor() {
+    const locString = localStorage.getItem(LOCATIONS);
+    if (locString) {
+      this.locations$.next(JSON.parse(locString));
+    }
   }
 
-  addLocation(zipcode : string){
-    this.locations.push(zipcode);
-    localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-    this.weatherService.addCurrentConditions(zipcode);
+  getLocations(): Observable<LocationData[]> {
+    return this.locations$.asObservable();
   }
 
-  removeLocation(zipcode : string){
-    let index = this.locations.indexOf(zipcode);
-    if (index !== -1){
-      this.locations.splice(index, 1);
-      localStorage.setItem(LOCATIONS, JSON.stringify(this.locations));
-      this.weatherService.removeCurrentConditions(zipcode);
+  addLocation({ zipCode, nation }) {
+    this.locations$.value.push({ zipCode, nation });
+    this.locations$.next(this.locations$.value);
+    localStorage.setItem(LOCATIONS, JSON.stringify(this.locations$.value));
+  }
+
+  removeLocation(zipcode: string, nation: string) {
+    let index = this.locations$.value.findIndex(
+      (location) => location.zipCode === zipcode && location.nation === nation
+    );
+    if (index !== -1) {
+      this.locations$.value.splice(index, 1);
+      localStorage.setItem(LOCATIONS, JSON.stringify(this.locations$.value));
     }
   }
 }
