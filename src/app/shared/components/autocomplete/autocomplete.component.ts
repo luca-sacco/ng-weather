@@ -7,6 +7,7 @@ import {
   Input,
   OnChanges,
   OnInit,
+  Renderer2,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -68,7 +69,7 @@ export class AutocompleteComponent
     this.showDropdown = false;
   }
 
-  constructor() {
+  constructor(private _renderer: Renderer2) {
     this._optionsList = new OptionsList();
   }
 
@@ -86,8 +87,16 @@ export class AutocompleteComponent
     this._onTouched = fn;
   }
 
+  onBlur() {
+    this._onTouched();
+  }
+
   setDisabledState?(isDisabled: boolean): void {
-    throw new Error('Method not implemented.');
+    this.setProperty('disabled', isDisabled);
+  }
+
+  protected setProperty(key: string, value: any): void {
+    this._renderer.setProperty(this.inputSearch.nativeElement, key, value);
   }
 
   private _filter(expression: string) {
